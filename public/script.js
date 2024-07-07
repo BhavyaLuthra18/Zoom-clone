@@ -1,11 +1,4 @@
-// js for frontend
-// seeing our own video
-
-// this allows us to get video and audio outputfrom chrome
-// get userMedia will accepts an object
-// get userMedia is a promise
-// so we want the access to the promise when user get access to the camera and audio
-
+//own video stream
 let myVideoStream;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -26,9 +19,9 @@ document.addEventListener("DOMContentLoaded", () => {
     socket.emit("join-room", ROOM_ID, id);
   });
 
+  // adding thr video stream
   const addVideoStream = (video, stream) => {
     video.srcObject = stream;
-    // when we load the data for the stream we want to play this stream
     video.addEventListener("loadedmetadata", () => {
       video.play();
     });
@@ -37,7 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // calling the user
   const connectToNewUser = (userId, stream) => {
-    console.log(userId);
     // now calling other user who connected  with certain stream eg my stream
     const call = peer.call(userId, stream);
     const video = document.createElement("video");
@@ -60,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // Set mute button UI
+  //  mute button UI
   const setMuteButton = () => {
     const html = `
       <i class="fa-solid fa-microphone"></i>
@@ -68,10 +60,10 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector(".main__mute_button").innerHTML = html;
   };
 
-  // Set unmute button UI
+  //  unmute button UI
   const setUnmuteButton = () => {
     const html = `
-      <i class=" unmute fa-solid fa-microphone-slash"></i>
+      <i class="unmute fa-solid fa-microphone-slash"></i>
       <span>Unmute</span>`;
     document.querySelector(".main__mute_button").innerHTML = html;
   };
@@ -88,6 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  //Stop video UI
   const setStopVideo = () => {
     const html = `
     <i class="fa-solid fa-video"></i>
@@ -95,6 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector(".main__video_button").innerHTML = html;
   };
 
+  //Play video UI
   const setPlayVideo = () => {
     const html = `
     <i class=" stopVideo fa-solid fa-video-slash"></i>
@@ -125,12 +119,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // if key is enter(13) and text field have some value
     if (e.which == 13 && text.val().length !== 0) {
       // sending message from frontend along with the message that user typed
-      console.log(text.val());
       socket.emit("message", text.val());
       // after user pressed enter we want to clear the input
       text.val("");
     }
   });
+
   // create  message
   socket.on("createMessage", (message) => {
     $("ul").append(`<li class="message"><b>user</b><br/>${message}</li>`);
@@ -147,6 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // scroll bar
   const scrollToBottom = () => {
     let div = $(".main__chat__window");
     div.scrollTop(div.prop("scrollHeight"));
