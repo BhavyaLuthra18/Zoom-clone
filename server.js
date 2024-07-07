@@ -6,10 +6,15 @@ import { ExpressPeerServer } from "peer";
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
 
 //PORT
-const PORT = 3030;
+const PORT = process.env.PORT || 3030;
 
 //Peer Server
 const peerServer = ExpressPeerServer(server, {
